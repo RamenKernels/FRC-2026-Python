@@ -26,7 +26,7 @@ class RobotContainer:
                 lambda: self.joystick.getX(),
                 lambda: self.joystick.getZ(),
                 lambda: self.joystick.getThrottle(),
-                lambda: self.joystick.button(1).getAsBoolean(),
+                self.joystick.button(1)
             )
         )
         wpilib.SmartDashboard.putData(self.chooser)

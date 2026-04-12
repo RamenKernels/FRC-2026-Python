@@ -14,8 +14,6 @@ components = [
     #"all",
      "apriltag",
      "commands2",
-     "rev",
-     "navx",
     # "cscore",
     # "romi",
      "sim",
@@ -24,4 +22,7 @@ components = [
 
 # Other pip packages to install, such as vendor packages (each element
 # is equivalent to a line in requirements.txt)
-requires = []
+requires = [
+  "robotpy-rev",
+  "robotpy-navx",
+]

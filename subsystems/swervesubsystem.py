@@ -1,15 +1,15 @@
 import typing
 from constants import GyroConstants, PhysicalConstants, SwerveConstants
-from swervemodule import SwerveModule
+from subsystems.swervemodule import SwerveModule
 from navx import AHRS
 from wpimath.kinematics import (
     ChassisSpeeds,
     SwerveDrive4Kinematics,
 )
-import commands 
+import commands2
 
 
-class SwerveSubsystem(commands.Subsystem):
+class SwerveSubsystem(commands2.Subsystem):
     def __init__(self) -> None:
         super().__init__()
 
@@ -62,5 +62,9 @@ class SwerveSubsystem(commands.Subsystem):
                      turn: typing.Callable[[], float],
                      throttle: typing.Callable[[], float],
                      field_oriented: typing.Callable[[], bool],
-                    ):
-        self.drive(drive * throttle(), strafe * throttle(), turn * throttle(), field_oriented)
+                    ) -> commands2.Command:
+        return commands2.cmd.runEnd(
+            lambda: self.drive(drive() * throttle(), strafe() * throttle(), turn() * throttle(), field_oriented()),
+            lambda: self.drive(0, 0, 0, False),
+            self
+        )
