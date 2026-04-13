@@ -49,10 +49,19 @@ class ShooterConstants:
     SHOOTER_LEFT_CAN_ID: int = 41
     SHOOTER_RIGHT_CAN_ID: int = 42
 
-    P = 0.0005;
-    I = 0.0;
-    D = 0.0;
-    F = 0.001;
+    SHOOT_THRESHOLD: float = 300
+
+    AUTO_SHOOT_SLOPE: float = 227.501
+    AUTO_SHOOT_Y_INTERCEPT: float = 1838.52
+
+    P: float = 0.0005;
+    I: float = 0.0;
+    D: float = 0.0;
+    F: float = 0.001;
+
+
+class FuelConstants:
+    pass #todo
 
 
 class GyroConstants:

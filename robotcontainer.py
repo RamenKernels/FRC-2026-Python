@@ -24,7 +24,8 @@ class RobotContainer:
                 lambda: self.joystick.getY(),
                 lambda: self.joystick.getX(),
                 lambda: self.joystick.getZ(),
-                lambda: self.joystick.getThrottle(),
+                lambda: 1,
+                #lambda: self.joystick.getThrottle(),
                 self.joystick.button(1)
             )
         )
