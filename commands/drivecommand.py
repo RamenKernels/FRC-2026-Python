@@ -1,5 +1,6 @@
 import commands2
 import typing
+from wpilib import SmartDashboard
 from subsystems.swervesubsystem import SwerveSubsystem
 
 class DriveCommand(commands2.Command):
@@ -27,6 +28,12 @@ class DriveCommand(commands2.Command):
         rot = self.turn() * self.throttle()
 
         self.swerve_subsystem.drive(x, y, rot, self.field_oriented())
+
+        SmartDashboard.putNumber("Drive Command/drive", self.drive())
+        SmartDashboard.putNumber("Drive Command/strafe", self.strafe())
+        SmartDashboard.putNumber("Drive Command/turn", self.turn())
+        SmartDashboard.putNumber("Drive Command/throttle", self.throttle())
+
 
     def end(self, interrupted: bool) -> None:
         self.swerve_subsystem.drive(0, 0, 0, False)

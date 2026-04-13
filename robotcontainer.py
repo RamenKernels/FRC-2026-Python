@@ -2,7 +2,6 @@ import typing
 
 import commands2
 import wpilib
-import constants
 from subsystems.swervesubsystem import SwerveSubsystem
 from commands.drivecommand import DriveCommand
 
