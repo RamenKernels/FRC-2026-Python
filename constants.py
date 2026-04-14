@@ -61,7 +61,28 @@ class ShooterConstants:
 
 
 class FuelConstants:
-    pass #todo
+    HOPPER_CAN_ID: int = 32
+    INTAKE_CAN_ID: int = 33
+    FEEDER_LEFT_CAN_ID: int = 36
+    FEEDER_RIGHT_CAN_ID: int = 37
+    VECTOR_CAN_ID: int = 8
+
+    FEEDER_SPEED: float = 50
+    INTAKE_SPEED: float = 1600
+    HOPPER_SPEED: float = 0.5
+    VECTOR_SPEED: float = 0.5
+
+    INTAKE_P: float = 1.0
+    INTAKE_I: float = 0.0
+    INTAKE_D: float = 0.0
+
+    HOPPER_P: float = 1.0
+    HOPPER_I: float = 0.0
+    HOPPER_D: float = 0.0
+
+    VECTOR_P: float = 1.0
+    VECTOR_I: float = 0.0
+    VECTOR_D: float = 0.0
 
 
 class GyroConstants:

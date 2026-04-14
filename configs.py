@@ -1,10 +1,10 @@
 import math
-from rev import SparkMaxConfig, ClosedLoopConfig, FeedbackSensor
+from rev import SparkMaxConfig, FeedbackSensor
 from constants import SwerveConstants
 import constants
 
 
-class FrontLeftConfig:
+class SwerveConfig:
     drive_config = SparkMaxConfig()
     turn_config = SparkMaxConfig()
 
@@ -25,7 +25,7 @@ class FrontLeftConfig:
         driving_factor
     ).velocityConversionFactor(driving_factor * 60)
     drive_config.closedLoop.setFeedbackSensor(
-        ClosedLoopConfig.FeedbackSensor.kPrimaryEncoder
+        FeedbackSensor.kPrimaryEncoder
     ).pid(0.4, 0, 0).velocityFF(driving_velocity_ff).outputRange(-1, 1)
 
     turn_config.setIdleMode(SparkMaxConfig.IdleMode.kBrake).smartCurrentLimit(
@@ -35,13 +35,34 @@ class FrontLeftConfig:
         turning_factor
     ).velocityConversionFactor(turning_factor / 60)
     turn_config.closedLoop.pid(1, 0, 0).setFeedbackSensor(
-        ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder
+        FeedbackSensor.kAbsoluteEncoder
     ).outputRange(-1, 1).positionWrappingEnabled(True).positionWrappingInputRange(
         0, turning_factor
     )
 
-class ShooterConfig:
-    config = SparkMaxConfig()
 
-    config.setIdleMode(SparkMaxConfig.IdleMode.kCoast).smartCurrentLimit(40).inverted(False)
-    config.closedLoop.setFeedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(constants.ShooterConstants.P, constants.ShooterConstants.I, constants.ShooterConstants.D).feedForward.kV(constants.ShooterConstants.F)
+class FuelConfig:
+    hopper_config = SparkMaxConfig()
+    vector_config = SparkMaxConfig()
+    feeder_config = SparkMaxConfig()
+    
+
+
+
+class ShooterConfig:
+    left_config = SparkMaxConfig()
+    right_config = SparkMaxConfig()
+
+    left_config\
+            .setIdleMode(SparkMaxConfig.IdleMode.kCoast)\
+            .smartCurrentLimit(100)\
+            .inverted(True)
+    left_config.closedLoop.\
+            setFeedbackSensor(FeedbackSensor.kPrimaryEncoder)\
+            .pid(constants.ShooterConstants.P,
+                 constants.ShooterConstants.I,
+                 constants.ShooterConstants.D)\
+                         .feedForward.kV(constants.ShooterConstants.F)
+
+    #Make the right follow the left but inverted
+    right_config = left_config.follow(constants.ShooterConstants.SHOOTER_LEFT_CAN_ID, True)
