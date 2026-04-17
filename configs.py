@@ -18,35 +18,85 @@ class SwerveConfig:
 
     driving_velocity_ff = 1 / 6
 
-    drive_config.setIdleMode(SparkMaxConfig.IdleMode.kBrake).smartCurrentLimit(
-        50
-    ).inverted(True)
-    drive_config.encoder.positionConversionFactor(
-        driving_factor
-    ).velocityConversionFactor(driving_factor * 60)
-    drive_config.closedLoop.setFeedbackSensor(
-        FeedbackSensor.kPrimaryEncoder
-    ).pid(0.4, 0, 0).velocityFF(driving_velocity_ff).outputRange(-1, 1)
+    drive_config\
+            .setIdleMode(SparkMaxConfig.IdleMode.kBrake)\
+            .smartCurrentLimit(50)\
+            .inverted(True)
+    drive_config.encoder\
+            .positionConversionFactor(driving_factor)\
+            .velocityConversionFactor(driving_factor * 60)
+    drive_config.closedLoop\
+            .setFeedbackSensor(FeedbackSensor.kPrimaryEncoder)\
+            .pid(0.4, 0, 0)\
+            .velocityFF(driving_velocity_ff)\
+            .outputRange(-1, 1)
 
-    turn_config.setIdleMode(SparkMaxConfig.IdleMode.kBrake).smartCurrentLimit(
-        20
-    ).inverted(True)
-    turn_config.absoluteEncoder.inverted(True).positionConversionFactor(
-        turning_factor
-    ).velocityConversionFactor(turning_factor / 60)
-    turn_config.closedLoop.pid(1, 0, 0).setFeedbackSensor(
-        FeedbackSensor.kAbsoluteEncoder
-    ).outputRange(-1, 1).positionWrappingEnabled(True).positionWrappingInputRange(
-        0, turning_factor
-    )
+    turn_config\
+            .setIdleMode(SparkMaxConfig.IdleMode.kBrake)\
+            .smartCurrentLimit(20)\
+            .inverted(True)
+    turn_config.absoluteEncoder\
+            .inverted(True)\
+            .positionConversionFactor(turning_factor)\
+            .velocityConversionFactor(turning_factor / 60)
+    turn_config.closedLoop\
+            .pid(1, 0, 0)\
+            .setFeedbackSensor(FeedbackSensor.kAbsoluteEncoder)\
+            .outputRange(-1, 1)\
+            .positionWrappingEnabled(True)\
+            .positionWrappingInputRange(0, turning_factor)
 
 
-class FuelConfig:
-    hopper_config = SparkMaxConfig()
-    vector_config = SparkMaxConfig()
-    feeder_config = SparkMaxConfig()
+class IntakeConfig:
+    config = SparkMaxConfig()
+
+    config\
+            .setIdleMode(SparkMaxConfig.IdleMode.kCoast)\
+            .smartCurrentLimit(10)\
+            .inverted(False)
+    config.closedLoop\
+            .setFeedbackSensor(FeedbackSensor.kPrimaryEncoder)\
+            .pid(constants.FuelConstants.HOPPER_P, constants.FuelConstants.HOPPER_I, constants.FuelConstants.HOPPER_D)
+
+
+class HopperConfig:
+    config = SparkMaxConfig()
     
+    config\
+            .setIdleMode(SparkMaxConfig.IdleMode.kCoast)\
+            .smartCurrentLimit(10)\
+            .inverted(False)
+    config.closedLoop\
+            .setFeedbackSensor(FeedbackSensor.kPrimaryEncoder)\
+            .pid(constants.FuelConstants.HOPPER_P, constants.FuelConstants.HOPPER_I, constants.FuelConstants.HOPPER_D)
 
+
+class VectorConfig:
+    config = SparkMaxConfig()
+
+    config\
+            .setIdleMode(SparkMaxConfig.IdleMode.kCoast)\
+            .smartCurrentLimit(10)\
+            .inverted(False)
+    config.closedLoop\
+            .setFeedbackSensor(FeedbackSensor.kPrimaryEncoder)\
+            .pid(constants.FuelConstants.INTAKE_P, constants.FuelConstants.INTAKE_I, constants.FuelConstants.INTAKE_D)
+
+
+class FeederConfig:
+    left_config = SparkMaxConfig()
+    right_config = SparkMaxConfig()
+
+    left_config\
+            .setIdleMode(SparkMaxConfig.IdleMode.kCoast)\
+            .smartCurrentLimit(40)\
+            .inverted(True)
+    left_config.closedLoop\
+            .setFeedbackSensor(FeedbackSensor.kPrimaryEncoder)\
+            .pid(constants.FuelConstants.INTAKE_P, constants.FuelConstants.INTAKE_I, constants.FuelConstants.INTAKE_D)
+
+    #Right follows the left
+    right_config = left_config.follow(constants.FuelConstants.FEEDER_LEFT_CAN_ID, True)
 
 
 class ShooterConfig:
