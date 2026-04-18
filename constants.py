@@ -1,6 +1,11 @@
-from wpimath.geometry import Translation2d
+from typing import Optional
+from wpilib import DriverStation
+from wpimath import units
+from wpimath.geometry import Rotation3d, Transform3d, Translation2d
 import navx
 from wpimath.kinematics import SwerveDrive4Kinematics
+from robotpy_apriltag import AprilTagFieldLayout, AprilTagField
+from wpimath.trajectory import TrapezoidProfile
 
 
 class PhysicalConstants:
@@ -98,10 +103,32 @@ class ControllerConstants:
     FLIGHT_STICK_Z_DEADBAND: float = 0.15
 
 class VisionConstants:
-    CAMERA_NAME: str = ""  # THIS is why you don't spend 30 minutes naming a camera!
-    TRANSLATION_KP: float = 1.0
-    TRANSLATION_KI: float = 0.0
-    TRANSLATION_KD: float = 0.0
-    ROTATION_KP: float = 1.0
-    ROTATION_KI: float = 0.0
-    ROTATION_KD = 0.0
+    CAMERA_NAME: str = "cam4"
+
+    APRIL_TAG_LAYOUT: AprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagField.k2026RebuiltAndyMark)
+
+    ROBOT_TO_CAMERA_1: Transform3d = Transform3d(units.inchesToMeters(25), 0, units.inchesToMeters(19), Rotation3d())
+
+    RED_HUB_POS: Translation2d = Translation2d(11.6741194, 4.0346376)
+    BLUE_HUB_POS: Translation2d = Translation2d(4.6187614, 4.0346376)
+
+    XY_P: float = 0.4
+    XY_I: float = 0.0
+    XY_D: float = 0.0
+    XY_CONSTRAINTS: TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(0.01, 0.1)
+
+    ROT_P: float = 1.5
+    ROT_I: float = 0.0
+    ROT_D: float = 0.07
+    ROT_CONSTRAINTS: TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(0.25, 0.5)
+
+    def get_hub_pose(self) -> Translation2d:
+            alliance: Optional[DriverStation.Alliance] = DriverStation.getAlliance()
+
+            if alliance is not None:
+                if alliance == DriverStation.Alliance.kRed:
+                    return VisionConstants.RED_HUB_POS
+                elif alliance == DriverStation.Alliance.kBlue:
+                    return VisionConstants.BLUE_HUB_POS
+
+            return VisionConstants.BLUE_HUB_POS

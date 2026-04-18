@@ -25,4 +25,5 @@ components = [
 requires = [
   "robotpy-rev",
   "robotpy-navx",
+  "photonlibpy",
 ]
