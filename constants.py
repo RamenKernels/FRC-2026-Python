@@ -65,6 +65,21 @@ class ShooterConstants:
     F: float = 0.001;
 
 
+class IntakeArmConstants:
+    MANUAL_VOLTS: float = 1.7
+
+    ARM_STALL_AMPS: float = 4.0
+
+    AUTO_ARM_STALL_AMPS: float = 5.0
+
+    INTAKE_ARM_CAN_ID: int = 51
+
+    INTAKE_ARM_EXTEND_POWER: float = 0.5
+    INTAKE_ARM_RETRACT_POWER: float = 0.5
+
+    AUTO_VOLTS: float = 1.5
+
+
 class FuelConstants:
     HOPPER_CAN_ID: int = 32
     INTAKE_CAN_ID: int = 33
@@ -101,6 +116,7 @@ class ControllerConstants:
     FLIGHT_STICK_Y_DEADBAND: float = 0.15
     FLIGHT_STICK_X_DEADBAND: float = 0.25
     FLIGHT_STICK_Z_DEADBAND: float = 0.15
+
 
 class VisionConstants:
     CAMERA_NAME: str = "cam4"

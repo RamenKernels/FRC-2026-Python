@@ -47,6 +47,14 @@ class SwerveConfig:
             .positionWrappingInputRange(0, turning_factor)
 
 
+class IntakeArmConfig:
+    config = SparkMaxConfig()
+
+    config\
+            .inverted(True)\
+            .setIdleMode(SparkMaxConfig.IdleMode.kBrake)\
+
+
 class IntakeConfig:
     config = SparkMaxConfig()
 
