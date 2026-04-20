@@ -1,5 +1,9 @@
 import typing
+
+from wpimath.controller import PIDController
+from wpimath.geometry import Pose2d
 from constants import GyroConstants, PhysicalConstants, SwerveConstants
+import constants
 from subsystems.swervemodule import SwerveModule
 from navx import AHRS
 from wpimath.kinematics import (
@@ -28,6 +32,10 @@ class SwerveSubsystem(commands2.Subsystem):
 
         self.gyro = AHRS(GyroConstants.NAV_X_COMTYPE)
 
+        self.x_pid = PIDController(constants.VisionConstants.XY_P, constants.VisionConstants.XY_I, constants.VisionConstants.XY_D)
+        self.y_pid = PIDController(constants.VisionConstants.XY_P, constants.VisionConstants.XY_I, constants.VisionConstants.XY_D)
+        self.rot_pid = PIDController(constants.VisionConstants.ROT_P, constants.VisionConstants.ROT_I, constants.VisionConstants.ROT_D)
+
     def drive(self, x: float, y: float, rot: float, field_oriented: bool) -> None:
         swerve_speeds = (
             ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -55,3 +63,17 @@ class SwerveSubsystem(commands2.Subsystem):
         self.front_right.set_desired_state(swerve_states[1])
         self.back_left.set_desired_state(swerve_states[2])
         self.back_right.set_desired_state(swerve_states[3])
+
+    def drive_relative_to(self, current_pose: Pose2d, new_pose: Pose2d) -> None:
+        x_out: float = -self.x_pid.calculate(current_pose.X(), new_pose.X())
+        y_out: float = -self.y_pid.calculate(current_pose.Y(), new_pose.Y())
+        rot_out: float = self.rot_pid.calculate(current_pose.rotation().radians())
+
+        self.drive(x_out, y_out, rot_out, False)
+
+    def drive_to(self, pose: Pose2d) -> None:
+        x_out: float = -self.x_pid.calculate(0, pose.X())
+        y_out: float = -self.y_pid.calculate(0, pose.Y())
+        rot_out: float = self.rot_pid.calculate(current_pose.rotation().radians())
+
+        self.drive(x_out, y_out, rot_out, False)
