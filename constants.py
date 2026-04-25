@@ -59,10 +59,12 @@ class ShooterConstants:
     AUTO_SHOOT_SLOPE: float = 227.501
     AUTO_SHOOT_Y_INTERCEPT: float = 1838.52
 
-    P: float = 0.0005;
-    I: float = 0.0;
-    D: float = 0.0;
-    F: float = 0.001;
+    MINUMUM_SHOOT_DISTANCE_METERS: float = 2
+
+    P: float = 0.0005
+    I: float = 0.0
+    D: float = 0.0
+    F: float = 0.001
 
 
 class IntakeArmConstants:
@@ -121,9 +123,13 @@ class ControllerConstants:
 class VisionConstants:
     CAMERA_NAME: str = "cam4"
 
-    APRIL_TAG_LAYOUT: AprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagField.k2026RebuiltAndyMark)
+    APRIL_TAG_LAYOUT: AprilTagFieldLayout = AprilTagFieldLayout.loadField(
+        AprilTagField.k2026RebuiltAndyMark
+    )
 
-    ROBOT_TO_CAMERA_1: Transform3d = Transform3d(units.inchesToMeters(25), 0, units.inchesToMeters(19), Rotation3d())
+    ROBOT_TO_CAMERA_1: Transform3d = Transform3d(
+        units.inchesToMeters(25), 0, units.inchesToMeters(19), Rotation3d()
+    )
 
     RED_HUB_POS: Translation2d = Translation2d(11.6741194, 4.0346376)
     BLUE_HUB_POS: Translation2d = Translation2d(4.6187614, 4.0346376)
@@ -131,20 +137,13 @@ class VisionConstants:
     XY_P: float = 0.4
     XY_I: float = 0.0
     XY_D: float = 0.0
-    XY_CONSTRAINTS: TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(0.01, 0.1)
+    XY_CONSTRAINTS: TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(
+        0.01, 0.1
+    )
 
     ROT_P: float = 1.5
     ROT_I: float = 0.0
     ROT_D: float = 0.07
-    ROT_CONSTRAINTS: TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(0.25, 0.5)
-
-    def get_hub_pose(self) -> Translation2d:
-            alliance: Optional[DriverStation.Alliance] = DriverStation.getAlliance()
-
-            if alliance is not None:
-                if alliance == DriverStation.Alliance.kRed:
-                    return VisionConstants.RED_HUB_POS
-                elif alliance == DriverStation.Alliance.kBlue:
-                    return VisionConstants.BLUE_HUB_POS
-
-            return VisionConstants.BLUE_HUB_POS
+    ROT_CONSTRAINTS: TrapezoidProfile.Constraints = TrapezoidProfile.Constraints(
+        0.25, 0.5
+    )

@@ -9,18 +9,50 @@ class FuelSubsystem(commands2.Subsystem):
     def __init__(self) -> None:
         super().__init__()
 
-        self.intake_motor = SparkMax(constants.FuelConstants.INTAKE_CAN_ID, SparkLowLevel.MotorType.kBrushless)
-        self.hopper_motor = SparkMax(constants.FuelConstants.HOPPER_CAN_ID, SparkLowLevel.MotorType.kBrushless)
-        self.vector_motor = SparkMax(constants.FuelConstants.VECTOR_CAN_ID, SparkLowLevel.MotorType.kBrushless)
-        self.feeder_motors = SparkMax(constants.FuelConstants.FEEDER_LEFT_CAN_ID, SparkLowLevel.MotorType.kBrushless) # Left motor
-        self.feeder_follower_motor = SparkMax(constants.FuelConstants.FEEDER_RIGHT_CAN_ID, SparkLowLevel.MotorType.kBrushless) # right motor
+        self.intake_motor = SparkMax(
+            constants.FuelConstants.INTAKE_CAN_ID, SparkLowLevel.MotorType.kBrushless
+        )
+        self.hopper_motor = SparkMax(
+            constants.FuelConstants.HOPPER_CAN_ID, SparkLowLevel.MotorType.kBrushless
+        )
+        self.vector_motor = SparkMax(
+            constants.FuelConstants.VECTOR_CAN_ID, SparkLowLevel.MotorType.kBrushless
+        )
+        self.feeder_motors = SparkMax(
+            constants.FuelConstants.FEEDER_LEFT_CAN_ID,
+            SparkLowLevel.MotorType.kBrushless,
+        )  # Left motor
+        self.feeder_follower_motor = SparkMax(
+            constants.FuelConstants.FEEDER_RIGHT_CAN_ID,
+            SparkLowLevel.MotorType.kBrushless,
+        )  # right motor
 
-        self.intake_motor.configure(configs.IntakeConfig.config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters)
-        self.hopper_motor.configure(configs.HopperConfig.config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters)
-        self.vector_motor.configure(configs.VectorConfig.config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters)
+        self.intake_motor.configure(
+            configs.IntakeConfig.config,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters,
+        )
+        self.hopper_motor.configure(
+            configs.HopperConfig.config,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters,
+        )
+        self.vector_motor.configure(
+            configs.VectorConfig.config,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters,
+        )
 
-        self.feeder_motors.configure(configs.FeederConfig.left_config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters) # Left motor
-        self.feeder_follower_motor.configure(configs.FeederConfig.right_config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters) # right motor
+        self.feeder_motors.configure(
+            configs.FeederConfig.left_config,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters,
+        )  # Left motor
+        self.feeder_follower_motor.configure(
+            configs.FeederConfig.right_config,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kNoPersistParameters,
+        )  # right motor
 
     def intake(self) -> None:
         self.intake_motor.set(constants.FuelConstants.INTAKE_SPEED)

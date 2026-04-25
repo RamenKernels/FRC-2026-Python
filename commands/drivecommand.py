@@ -3,14 +3,17 @@ import typing
 from wpilib import SmartDashboard
 from subsystems.swervesubsystem import SwerveSubsystem
 
+
 class DriveCommand(commands2.Command):
-    def __init__(self,
-                 swerve_subsystem: SwerveSubsystem,
-                 drive: typing.Callable[[], float],
-                 strafe: typing.Callable[[], float],
-                 turn: typing.Callable[[], float],
-                 throttle: typing.Callable[[], float],
-                 field_oriented: typing.Callable[[], bool]) -> None:
+    def __init__(
+        self,
+        swerve_subsystem: SwerveSubsystem,
+        drive: typing.Callable[[], float],
+        strafe: typing.Callable[[], float],
+        turn: typing.Callable[[], float],
+        throttle: typing.Callable[[], float],
+        field_oriented: typing.Callable[[], bool],
+    ) -> None:
         super().__init__()
 
         self.swerve_subsystem = swerve_subsystem
@@ -33,7 +36,6 @@ class DriveCommand(commands2.Command):
         SmartDashboard.putNumber("Drive Command/strafe", self.strafe())
         SmartDashboard.putNumber("Drive Command/turn", self.turn())
         SmartDashboard.putNumber("Drive Command/throttle", self.throttle())
-
 
     def end(self, interrupted: bool) -> None:
         self.swerve_subsystem.drive(0, 0, 0, False)
